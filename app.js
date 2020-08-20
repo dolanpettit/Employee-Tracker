@@ -82,24 +82,47 @@ function addEmployee() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
 
-    inquirer.prompt([
-      {
-        name: "firstName",
-        type: "input",
-        message: "What is the employee's first name",
-      },
-      {
-        name: "lastName",
-        type: "input",
-        message: "What is the employee's last name",
-      },
-      {
-        name: "employeeRole",
-        type: "list",
-        message: "What is the employee's role",
-        choices: result.map((role) => role.title),
-      },
-    ]);
+    inquirer
+      .prompt([
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is the employee's first name",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is the employee's last name",
+        },
+        {
+          name: "employeeRole",
+          type: "list",
+          message: "What is the employee's role",
+          choices: result.map((role) => role.title),
+        },
+      ])
+      .then(({ firstName, lastName, employeeRole }) => {
+        let roleID;
+        result.map((existingRole) => {
+          if (existingRole.title === employeeRole) {
+            roleID = existingRole.id;
+            connection.query(
+              "INSERT INTO employee SET ?",
+              {
+                first_name: firstName,
+                last_name: lastName,
+                role_id: roleID,
+              },
+              console.log("Your employee was created successfully.")
+            );
+            connection.query("SELECT * FROM employee", function (err, result) {
+              if (err) throw err;
+              console.table(result);
+              initPrompts();
+            });
+          }
+        });
+      });
   });
 }
 
