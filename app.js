@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
+const pw = require("./pw");
 
 // Create connection to mysql db
 const connection = mysql.createConnection({
@@ -14,12 +15,10 @@ const connection = mysql.createConnection({
 
 // Connecting to the db
 connection.connect((err) => {
-  if (err) {
-    throw err;
-  }
+  if (err) throw err;
   // Logs CPU thread to console
   console.log(`\n \n Connected on thread: ${connection.threadId}`);
-  // initPrompts();
+  initPrompts();
 });
 
 function initPrompts() {
@@ -36,9 +35,72 @@ function initPrompts() {
         "View Departments",
         "View Roles",
         "Update Employee Role",
+        "Delete Employee",
+        "Exit",
       ],
     })
-    .then(function (user) {
-      console.log(user);
+    .then(({ initChoice }) => {
+      console.log(initChoice);
+      switch (initChoice) {
+        case "Add Employee":
+          console.log("Add employee");
+          addEmployee();
+          break;
+        case "Add Department":
+          console.log("Add department");
+          //addDepartment();
+          break;
+        case "Add Role":
+          console.log("Add role");
+          //addRole();
+          break;
+        case "View Employees":
+          console.log("View employees");
+          //viewEmployees();
+          break;
+        case "View Roles":
+          console.log("View roles");
+          //viewRoles();
+          break;
+        case "Update Employee Role":
+          console.log("Update Employee Role");
+          //updateEmployeeRole();
+          break;
+        case "Delete Employee":
+          console.log("Delete Employee");
+          //deleteEmployee
+          break;
+        case "Exit":
+          console.log("Exit");
+          //exit();
+          break;
+      }
     });
 }
+
+function addEmployee() {
+  connection.query("SELECT * FROM role", function (err, result) {
+    if (err) throw err;
+
+    inquirer.prompt([
+      {
+        name: "firstName",
+        type: "input",
+        message: "What is the employee's first name",
+      },
+      {
+        name: "lastName",
+        type: "input",
+        message: "What is the employee's last name",
+      },
+      {
+        name: "employeeRole",
+        type: "list",
+        message: "What is the employee's role",
+        choices: result.map((role) => role.title),
+      },
+    ]);
+  });
+}
+
+function addRole() {}

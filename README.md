@@ -29,7 +29,7 @@ The test folder has all tests related to the application. To run the tests, ente
 
 # Questions
 
-For any questions about this assignment, feel free to reach out to me on github or my email. Thank you for viewing this application.
+For any questions about this assignment, feel free to reach out to me on github or my email.
 
 https://github.com/dolanpettit
 
