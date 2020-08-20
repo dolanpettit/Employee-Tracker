@@ -126,4 +126,31 @@ function addEmployee() {
   });
 }
 
-function addRole() {}
+function addDepartment() {
+  inquirer
+    .prompt({
+      name: "addDepartment",
+      type: "input",
+      message: "What department would you like to add",
+    })
+    .then(({ addDepartment }) => {
+      connection.query(
+        "INSERT INTO department SET ?",
+        {
+          department_name: addDepartment,
+        },
+        console.log(
+          `\n You successfully added a new department: ${addDepartment}`
+        )
+      );
+      connection.query("SELECT * FROM department", function (err, result) {
+        if (err) throw err;
+        console.table(result);
+        initPrompts();
+      });
+    });
+}
+
+function addRole() {
+  connection.query("SELECT *");
+}
