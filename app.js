@@ -14,10 +14,31 @@ const connection = mysql.createConnection({
 
 // Connecting to the db
 connection.connect((err) => {
-    if (err) {
-        throw err
-    }
-    // Logs CPU thread to console
-    console.log(`\n \n Connected on thread: ${connection.threadId}`);
-    // initPrompts();
-})
+  if (err) {
+    throw err;
+  }
+  // Logs CPU thread to console
+  console.log(`\n \n Connected on thread: ${connection.threadId}`);
+  // initPrompts();
+});
+
+function initPrompts() {
+  inquirer
+    .prompt({
+      name: "initChoice",
+      type: "list",
+      message: "What would you like to do?",
+      choices: [
+        "Add Employee",
+        "Add Department",
+        "Add Role",
+        "View Employees",
+        "View Departments",
+        "View Roles",
+        "Update Employee Role",
+      ],
+    })
+    .then(function (user) {
+      console.log(user);
+    });
+}
