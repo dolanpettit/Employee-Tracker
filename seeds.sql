@@ -19,7 +19,14 @@ INSERT INTO role (title, salary, department_id) VALUES ('Senior Legal Analyst', 
 INSERT INTO role (title, salary, department_id) VALUES ('Legal Manager', 78500.00, 4);
 
 -- Inserting employee values
-
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Jim Dodson');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Casey Smith');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Hannah Porter');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Chris Dunn');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Ashley Jacobs');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Dimitri Diroseau');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Abigail Harris');
+INSERT INTO employee (first_name, last_name, role_id) VALUES ('Scott Mitchell');
 
 
 
