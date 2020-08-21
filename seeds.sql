@@ -1,8 +1,8 @@
 -- Inserting department values
-INSERT INTO department (name) VALUES ('Sales');
-INSERT INTO department (name) VALUES ('Engineering');
-INSERT INTO department (name) VALUES ('Finance');
-INSERT INTO department (name) VALUES ('Legal');
+INSERT INTO department (department_name) VALUES ('Sales');
+INSERT INTO department (department_name) VALUES ('Engineering');
+INSERT INTO department (department_name) VALUES ('Finance');
+INSERT INTO department (department_name) VALUES ('Legal');
 
 -- Inserting role values
 INSERT INTO role (title, salary, department_id) VALUES ('Junior Sales Associate', 42000.00, 1);

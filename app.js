@@ -48,15 +48,15 @@ function initPrompts() {
           break;
         case "Add Department":
           console.log("Add department");
-          //addDepartment();
+          addDepartment();
           break;
         case "Add Role":
           console.log("Add role");
-          //addRole();
+          addRole();
           break;
         case "View Employees":
           console.log("View employees");
-          //viewEmployees();
+          viewEmployees();
           break;
         case "View Roles":
           console.log("View roles");
@@ -205,3 +205,13 @@ function addRole() {
       });
   });
 }
+
+function viewEmployees() {
+  connection.query("SELECT * FROM employee", function (err, result) {
+    if (err) throw err;
+    console.log("There are: " + result.length + " total employees.");
+    console.table(result);
+    initPrompts();
+  });
+}
+
