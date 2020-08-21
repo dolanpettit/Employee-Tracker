@@ -58,21 +58,25 @@ function initPrompts() {
           console.log("View employees");
           viewEmployees();
           break;
+        case "View Departments":
+          console.log("View department");
+          viewDepartments();
+          break;
         case "View Roles":
           console.log("View roles");
-          //viewRoles();
+          viewRoles();
           break;
         case "Update Employee Role":
           console.log("Update Employee Role");
-          //updateEmployeeRole();
+          updateEmployeeRole();
           break;
         case "Delete Employee":
           console.log("Delete Employee");
-          //deleteEmployee
+          deleteEmployee;
           break;
         case "Exit":
           console.log("Exit");
-          //exit();
+          exit();
           break;
       }
     });
@@ -174,15 +178,17 @@ function addRole() {
           },
         },
         {
-          name: "roleID",
-          type: "rawlist",
+          name: "roleDept",
+          type: "list",
+          message:
+            "What is the department of the position you would like to add?",
           choices: result.map((department) => department.department_name),
         },
       ])
-      .then(({ roleTitle, roleSalary, roleID }) => {
+      .then(({ roleTitle, roleSalary, roleDept }) => {
         let deptID;
         result.map((existingDept) => {
-          if (existingDept.department_name === roleID) {
+          if (existingDept.department_name === roleDept) {
             deptID = existingDept.id;
             connection.query(
               "INSERT INTO role SET ?",
@@ -215,3 +221,38 @@ function viewEmployees() {
   });
 }
 
+function viewDepartments() {
+  connection.query("SELECT * FROM department", function (err, result) {
+    if (err) throw err;
+    console.table(result);
+    initPrompts();
+  });
+}
+
+function viewRoles() {
+  connection.query("SELECT * FROM roles", function (err, result) {
+    if (err) throw err;
+    console.table(result);
+    initPrompts();
+  });
+}
+
+function updateEmployeeRole() {
+  connection.query("SELECT id, first_name, last_name FROM employee", function (
+    err,
+    result
+  ) {
+    if (err) throw err;
+    inquirer.prompt([
+      {
+        name: "employeeName",
+        type: "list",
+        message: "Who is the employee you would like to update?",
+        choices: result.map(
+          (employeeName) =>
+            `${employeeName.first_name} ${employeeName.last_name}`
+        ),
+      },
+    ]);
+  });
+}
