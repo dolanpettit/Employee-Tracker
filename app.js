@@ -279,7 +279,40 @@ function deleteEmployee() {
   });
 }
 
-// TODO: Complete this function 
+function deleteRole() {
+  connection.query("SELECT * FROM role", function (err, result) {
+    if (err) throw err;
+    inquirer.prompt({
+      name: "roleChosen",
+      type: "list",
+      message: "Which role would you like to delete?",
+      choices: result.map((role) => role.title),
+    });
+  });
+}
+
+function deleteDepartment() {
+  connection.query("SELECT * FROM department", function (err, result) {
+    if (err) throw err;
+    inquirer
+      .prompt({
+        name: "departmentChosen",
+        type: "list",
+        message: "Which department would you like to delete?",
+        choices: result.map((department) => department.department_name),
+      })
+      .then(({ departmentChosen }) => {
+        connection.query("DELETE FROM department WHERE ?", {
+          department_name: departmentChosen,
+        });
+        console.log("Success");
+        viewDepartments();
+        initPrompts();
+      });
+  });
+}
+
+// TODO: Complete this function
 function updateEmployeeRole() {
   connection.query("SELECT id, first_name, last_name FROM employee", function (
     err,
