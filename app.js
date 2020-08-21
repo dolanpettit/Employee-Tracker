@@ -28,32 +28,22 @@ function initPrompts() {
       type: "list",
       message: "What would you like to do?",
       choices: [
-        "Add Employee",
-        "Add Department",
-        "Add Role",
         "View Employees",
         "View Departments",
         "View Roles",
-        "Update Employee Role",
+        "Add Employee",
+        "Add Department",
+        "Add Role",
         "Delete Employee",
+        "Delete Role",
+        "Delete Department",
+        "Update Employee Role",
         "Exit",
       ],
     })
     .then(({ initChoice }) => {
       console.log(initChoice);
       switch (initChoice) {
-        case "Add Employee":
-          console.log("Add employee");
-          addEmployee();
-          break;
-        case "Add Department":
-          console.log("Add department");
-          addDepartment();
-          break;
-        case "Add Role":
-          console.log("Add role");
-          addRole();
-          break;
         case "View Employees":
           console.log("View employees");
           viewEmployees();
@@ -66,13 +56,33 @@ function initPrompts() {
           console.log("View roles");
           viewRoles();
           break;
+        case "Add Employee":
+          console.log("Add employee");
+          addEmployee();
+          break;
+        case "Add Department":
+          console.log("Add department");
+          addDepartment();
+          break;
+        case "Add Role":
+          console.log("Add role");
+          addRole();
+          break;
         case "Update Employee Role":
           console.log("Update Employee Role");
           updateEmployeeRole();
           break;
         case "Delete Employee":
           console.log("Delete Employee");
-          deleteEmployee;
+          deleteEmployee();
+          break;
+        case "Delete Role":
+          console.log("Delete Role");
+          deleteRole();
+          break;
+        case "Delete Department":
+          console.log("Delete Department");
+          deleteDepartment();
           break;
         case "Exit":
           console.log("Exit");
@@ -230,13 +240,46 @@ function viewDepartments() {
 }
 
 function viewRoles() {
-  connection.query("SELECT * FROM roles", function (err, result) {
+  connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
     console.table(result);
     initPrompts();
   });
 }
 
+// TODO: Ccomplete this function
+function deleteEmployee() {
+  connection.query("SELECT first_name, last_name FROM employee", function (
+    err,
+    result
+  ) {
+    if (err) throw err;
+    inquirer
+      .prompt({
+        name: "employeeName",
+        type: "list",
+        message: "Who is the employee you would like to delete?",
+        choices: result.map(
+          (employeeName) =>
+            `${employeeName.first_name} ${employeeName.last_name}`
+        ),
+      })
+      .then(({ employeeName }) => {
+        connection.query(
+          "DELETE FROM employee WHERE ?",
+          {
+            firstName: employeeName.role,
+          },
+          function (err, result) {
+            if (err) throw err;
+          }
+        );
+        viewEmployees();
+      });
+  });
+}
+
+// TODO: Complete this function 
 function updateEmployeeRole() {
   connection.query("SELECT id, first_name, last_name FROM employee", function (
     err,
@@ -252,6 +295,12 @@ function updateEmployeeRole() {
           (employeeName) =>
             `${employeeName.first_name} ${employeeName.last_name}`
         ),
+      },
+      {
+        name: "employeeRole",
+        type: "list",
+        message: "What is the employee's role?",
+        choices: result.map((employeeRole) => employeeRole.id),
       },
     ]);
   });
