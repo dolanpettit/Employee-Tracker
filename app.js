@@ -152,5 +152,56 @@ function addDepartment() {
 }
 
 function addRole() {
-  connection.query("SELECT *");
+  connection.query("SELECT * FROM department", function (err, result) {
+    if (err) throw err;
+
+    inquirer
+      .prompt([
+        {
+          name: "roleTitle",
+          type: "input",
+          message: "What is the job title you would like to add?",
+        },
+        {
+          name: "roleSalary",
+          type: "input",
+          message: "What is the salary of the job you are adding?",
+          validate: function (salary) {
+            if (isNaN(salary) === false) {
+              return true;
+            }
+            return "Please enter a valid number";
+          },
+        },
+        {
+          name: "roleID",
+          type: "rawlist",
+          choices: result.map((department) => department.department_name),
+        },
+      ])
+      .then(({ roleTitle, roleSalary, roleID }) => {
+        let deptID;
+        result.map((existingDept) => {
+          if (existingDept.department_name === roleID) {
+            deptID = existingDept.id;
+            connection.query(
+              "INSERT INTO role SET ?",
+              {
+                title: roleTitle,
+                salary: roleSalary,
+                department_id: deptID,
+              },
+              console.log(
+                `You successfully added a new job title: ${roleTitle}, with a salary of ${roleSalary}`
+              )
+            );
+          }
+        });
+        connection.query("SELECT * FROM role", function (err, result) {
+          if (err) throw err;
+          console.table(result);
+          initPrompts();
+        });
+      });
+  });
 }
