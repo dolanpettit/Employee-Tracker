@@ -234,6 +234,7 @@ function viewEmployees() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err;
+    console.log("There are: " + result.length + "total departments.");
     console.table(result);
     initPrompts();
   });
@@ -242,6 +243,7 @@ function viewDepartments() {
 function viewRoles() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
+    console.log("There are: " + result.length + " total employee roles.");
     console.table(result);
     initPrompts();
   });
@@ -249,7 +251,7 @@ function viewRoles() {
 
 // TODO: Ccomplete this function
 function deleteEmployee() {
-  connection.query("SELECT first_name, last_name FROM employee", function (
+  connection.query("SELECT id, first_name, last_name FROM employee", function (
     err,
     result
   ) {
@@ -261,14 +263,15 @@ function deleteEmployee() {
         message: "Who is the employee you would like to delete?",
         choices: result.map(
           (employeeName) =>
-            `${employeeName.first_name} ${employeeName.last_name}`
+            `${employeeName.id} ${employeeName.first_name} ${employeeName.last_name}`
         ),
       })
       .then(({ employeeName }) => {
+        console.log(employeeName);
         connection.query(
           "DELETE FROM employee WHERE ?",
           {
-            firstName: employeeName.role,
+            first_name: employeeName.first_name,
           },
           function (err, result) {
             if (err) throw err;
