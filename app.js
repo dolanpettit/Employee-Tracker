@@ -189,9 +189,22 @@ function addRole() {
             "What is the department of the position you would like to add?",
           choices: result.map((department) => department.department_name),
         },
+        {
+          name: "managerKey",
+          type: "list",
+          message: "Is this role a management position?",
+          choices: ["Yes", "No"],
+        },
       ])
-      .then(({ roleTitle, roleSalary, roleDept }) => {
+      .then(({ roleTitle, roleSalary, roleDept, managerKey }) => {
         let deptID;
+        function manager() {
+          if (managerKey === "Yes") {
+            return deptID;
+          } else {
+            return null;
+          }
+        }
         result.map((existingDept) => {
           if (existingDept.department_name === roleDept) {
             deptID = existingDept.id;
@@ -201,6 +214,7 @@ function addRole() {
                 title: roleTitle,
                 salary: roleSalary,
                 department_id: deptID,
+                manager_key: manager(),
               },
               console.log(
                 `You successfully added a new job title: ${roleTitle}, with a salary of ${roleSalary}`
@@ -253,7 +267,6 @@ function viewRoles() {
   });
 }
 
-// TODO: Ccomplete this function
 function deleteEmployee() {
   connection.query("SELECT id, first_name, last_name FROM employee", function (
     err,
@@ -271,11 +284,12 @@ function deleteEmployee() {
         ),
       })
       .then(({ employeeName }) => {
+        employeeName = employeeName.replace(/\D/g, "");
         console.log(employeeName);
         connection.query(
           "DELETE FROM employee WHERE ?",
           {
-            first_name: employeeName.first_name,
+            id: employeeName,
           },
           function (err, result) {
             if (err) throw err;
