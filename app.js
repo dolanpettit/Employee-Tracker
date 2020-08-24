@@ -106,6 +106,13 @@ function addEmployee() {
       ])
       .then(({ firstName, lastName, employeeRole }) => {
         let roleID;
+        function manager() {
+          if (employeeRole.includes("Manager")) {
+            return roleID;
+          } else {
+            return null;
+          }
+        }
         result.map((existingRole) => {
           if (existingRole.title === employeeRole) {
             roleID = existingRole.id;
@@ -115,17 +122,11 @@ function addEmployee() {
                 first_name: firstName,
                 last_name: lastName,
                 role_id: roleID,
+                manager_key: manager(),
               },
               console.log("Your employee was created successfully.")
             );
-            connection.query("SELECT * FROM employee", function (err, result) {
-              if (err) throw err;
-              console.log(
-                chalk.blue("There are " + result.length + " total employees.")
-              );
-              console.table(result);
-              initPrompts();
-            });
+            viewEmployees();
           }
         });
       });
@@ -149,14 +150,7 @@ function addDepartment() {
           `\n You successfully added a new department: ${addDepartment}`
         )
       );
-      connection.query("SELECT * FROM department", function (err, result) {
-        if (err) throw err;
-        console.log(
-          chalk.blue("There are " + result.length + " total departments.")
-        );
-        console.table(result);
-        initPrompts();
-      });
+      viewDepartments();
     });
 }
 
@@ -222,14 +216,7 @@ function addRole() {
             );
           }
         });
-        connection.query("SELECT * FROM role", function (err, result) {
-          if (err) throw err;
-          console.log(
-            chalk.blue("There are " + result.length + " total employee roles.")
-          );
-          console.table(result);
-          initPrompts();
-        });
+        viewRoles();
       });
   });
 }
@@ -314,7 +301,6 @@ function deleteRole() {
         connection.query("DELETE FROM role WHERE ?", {
           title: roleChosen,
         });
-        console.log("Success");
         viewRoles();
         initPrompts();
       });
@@ -335,7 +321,6 @@ function deleteDepartment() {
         connection.query("DELETE FROM department WHERE ?", {
           department_name: departmentChosen,
         });
-        console.log(chalk.blue("Success"));
         viewDepartments();
         initPrompts();
       });
@@ -363,7 +348,7 @@ function updateEmployeeRole() {
         name: "employeeRole",
         type: "list",
         message: "What is the employee's role?",
-        choices: result.map((employeeRole) => employeeRole.id),
+        choices: result.map((employeeRole) => `${employeeRole.id}`),
       },
     ]);
   });
