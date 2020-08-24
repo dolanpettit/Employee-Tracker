@@ -17,7 +17,7 @@ If SSH keys are installed, you can install the program by cloning it to your loc
 
 ## Usage Information
 
-After the program has been installed, run it using node app. The application will first start off by asking what your role is as an employee. It will then ask for some boilerplate information such as name, ID number, and email. Depending on which role you've chosen, you will also be asked for some information specific to that role. For example, managers are prompted for their office number, engineers are prompted for the link to their github, and interns are prompted for the name of their school. After entering all employees necessary and selecting 'No" when prompted to add another employee, the application will generate the HTML file containing all of the teams information.
+After the program has been installed, run it using node app. The application will then prompt you with a list of choices such as view, add, or delete: employees, roles, and departments. If no such action is taken you can exit the prompt and the application will end the connection to the database.
 
 View the demo: <a href="https://drive.google.com/file/d/1I7jE7V5uZQH9PDVn2SHJ9nVyaGgjyhdP/view">https://drive.google.com/file/d/1I7jE7V5uZQH9PDVn2SHJ9nVyaGgjyhdP/view</a>
 

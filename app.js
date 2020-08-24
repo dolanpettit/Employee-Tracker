@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require("console.table");
 const pw = require("./pw");
+const chalk = require("chalk");
 
 // Create connection to mysql db
 const connection = mysql.createConnection({
@@ -119,7 +120,9 @@ function addEmployee() {
             );
             connection.query("SELECT * FROM employee", function (err, result) {
               if (err) throw err;
-              console.log("There are " + result.length + " total employees.");
+              console.log(
+                chalk.blue("There are " + result.length + " total employees.")
+              );
               console.table(result);
               initPrompts();
             });
@@ -148,7 +151,9 @@ function addDepartment() {
       );
       connection.query("SELECT * FROM department", function (err, result) {
         if (err) throw err;
-        console.log("There are " + result.length + " total departments.");
+        console.log(
+          chalk.blue("There are " + result.length + " total departments.")
+        );
         console.table(result);
         initPrompts();
       });
@@ -205,7 +210,9 @@ function addRole() {
         });
         connection.query("SELECT * FROM role", function (err, result) {
           if (err) throw err;
-          "There are " + result.length + " total employee roles.";
+          console.log(
+            chalk.blue("There are " + result.length + " total employee roles.")
+          );
           console.table(result);
           initPrompts();
         });
@@ -216,7 +223,9 @@ function addRole() {
 function viewEmployees() {
   connection.query("SELECT * FROM employee", function (err, result) {
     if (err) throw err;
-    console.log("There are: " + result.length + " total employees.");
+    console.log(
+      chalk.blue("There are: " + result.length + " total employees.")
+    );
     console.table(result);
     initPrompts();
   });
@@ -225,7 +234,9 @@ function viewEmployees() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err;
-    console.log("There are: " + result.length + " total departments.");
+    console.log(
+      chalk.blue("There are: " + result.length + " total departments.")
+    );
     console.table(result);
     initPrompts();
   });
@@ -234,7 +245,9 @@ function viewDepartments() {
 function viewRoles() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
-    console.log("There are: " + result.length + " total employee roles.");
+    console.log(
+      chalk.blue("There are: " + result.length + " total employee roles.")
+    );
     console.table(result);
     initPrompts();
   });
@@ -308,7 +321,7 @@ function deleteDepartment() {
         connection.query("DELETE FROM department WHERE ?", {
           department_name: departmentChosen,
         });
-        console.log("Success");
+        console.log(chalk.blue("Success"));
         viewDepartments();
         initPrompts();
       });
