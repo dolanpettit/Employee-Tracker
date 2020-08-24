@@ -42,50 +42,38 @@ function initPrompts() {
       ],
     })
     .then(({ initChoice }) => {
-      console.log(initChoice);
       switch (initChoice) {
         case "View Employees":
-          console.log("View employees");
           viewEmployees();
           break;
         case "View Departments":
-          console.log("View department");
           viewDepartments();
           break;
         case "View Roles":
-          console.log("View roles");
           viewRoles();
           break;
         case "Add Employee":
-          console.log("Add employee");
           addEmployee();
           break;
         case "Add Department":
-          console.log("Add department");
           addDepartment();
           break;
         case "Add Role":
-          console.log("Add role");
           addRole();
           break;
         case "Update Employee Role":
-          console.log("Update Employee Role");
           updateEmployeeRole();
           break;
         case "Delete Employee":
-          console.log("Delete Employee");
           deleteEmployee();
           break;
         case "Delete Role":
-          console.log("Delete Role");
           deleteRole();
           break;
         case "Delete Department":
-          console.log("Delete Department");
           deleteDepartment();
           break;
         case "Exit":
-          console.log("Exit");
           exit();
           break;
       }
@@ -131,6 +119,7 @@ function addEmployee() {
             );
             connection.query("SELECT * FROM employee", function (err, result) {
               if (err) throw err;
+              console.log("There are " + result.length + " total employees.");
               console.table(result);
               initPrompts();
             });
@@ -159,6 +148,7 @@ function addDepartment() {
       );
       connection.query("SELECT * FROM department", function (err, result) {
         if (err) throw err;
+        console.log("There are " + result.length + " total departments.");
         console.table(result);
         initPrompts();
       });
@@ -215,6 +205,7 @@ function addRole() {
         });
         connection.query("SELECT * FROM role", function (err, result) {
           if (err) throw err;
+          "There are " + result.length + " total employee roles.";
           console.table(result);
           initPrompts();
         });
@@ -234,7 +225,7 @@ function viewEmployees() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err;
-    console.log("There are: " + result.length + "total departments.");
+    console.log("There are: " + result.length + " total departments.");
     console.table(result);
     initPrompts();
   });
@@ -285,12 +276,21 @@ function deleteEmployee() {
 function deleteRole() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
-    inquirer.prompt({
-      name: "roleChosen",
-      type: "list",
-      message: "Which role would you like to delete?",
-      choices: result.map((role) => role.title),
-    });
+    inquirer
+      .prompt({
+        name: "roleChosen",
+        type: "list",
+        message: "Which role would you like to delete?",
+        choices: result.map((role) => role.title),
+      })
+      .then(({ roleChosen }) => {
+        connection.query("DELETE FROM role WHERE ?", {
+          title: roleChosen,
+        });
+        console.log("Success");
+        viewRoles();
+        initPrompts();
+      });
   });
 }
 
@@ -340,4 +340,8 @@ function updateEmployeeRole() {
       },
     ]);
   });
+}
+
+function exit() {
+  connection.end();
 }

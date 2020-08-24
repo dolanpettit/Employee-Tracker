@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a CLI application that is focused on creating an HTML file with the inputted employee information provided by the user. This application is designed to prompt the user with specific questions based on their employee role. When all the prompts have been answered, an HTML file will be generated that can be displayed in the default browser displaying all the basic information of the employee's team. The file will be called "team.html".
+This is a CLI application that is focused on creating and maintaining a SQL database with the ability to view, add, and delete records of employees within a company.
 
 **## Table of Contents**
 
@@ -13,7 +13,7 @@ This is a CLI application that is focused on creating an HTML file with the inpu
 
 ## Installation Instructions
 
-If SSH keys are installed, you can install the program by cloning it to your local machine by running git clone git@github.com:dolanpettit/Employee-Summary.git. Once you have succesfully cloned to your local machine, the "team.html" file should be deleted and the app.js file can be run using "node app". Be sure to install all required dependencies for application and testing purposes by running "npm i" in the command line.
+If SSH keys are installed, you can install the program by cloning it to your local machine by running git clone git@github.com:dolanpettit/Employee-Tracker.git. Once you have succesfully cloned to your local machine, be sure to install all required dependencies for application by running "npm i" in the command line. You will also want to connect your local machine to a mySQL database and input the schema.sql file. Without the database connected, this application will not be able to work properly.
 
 ## Usage Information
 
@@ -23,9 +23,9 @@ View the demo: <a href="https://drive.google.com/file/d/1I7jE7V5uZQH9PDVn2SHJ9nV
 
 ## Test Instructions
 
-The test folder has all tests related to the application. To run the tests, enter "npm run test" in your command line.
+There are currently no testing suites for this application.
 
-<img src="./images/testingsuite.png">
+<img src="">
 
 # Questions
 
