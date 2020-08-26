@@ -222,14 +222,17 @@ function addRole() {
 }
 
 function viewEmployees() {
-  connection.query("SELECT * FROM employee", function (err, result) {
-    if (err) throw err;
-    console.log(
-      chalk.blue("There are: " + result.length + " total employees.")
-    );
-    console.table(result);
-    initPrompts();
-  });
+  connection.query(
+    "SELECT first_name, last_name, title, salary FROM employee INNER JOIN role ON employee.id = role.id",
+    function (err, result) {
+      if (err) throw err;
+      console.log(
+        chalk.blue("There are: " + result.length + " total employees.")
+      );
+      console.table(result);
+      initPrompts();
+    }
+  );
 }
 
 function viewDepartments() {
@@ -329,29 +332,36 @@ function deleteDepartment() {
 
 // TODO: Complete this function
 function updateEmployeeRole() {
-  connection.query("SELECT id, first_name, last_name FROM employee", function (
-    err,
-    result
-  ) {
-    if (err) throw err;
-    inquirer.prompt([
-      {
-        name: "employeeName",
-        type: "list",
-        message: "Who is the employee you would like to update?",
-        choices: result.map(
-          (employeeName) =>
-            `${employeeName.first_name} ${employeeName.last_name}`
-        ),
-      },
-      {
-        name: "employeeRole",
-        type: "list",
-        message: "What is the employee's role?",
-        choices: result.map((employeeRole) => `${employeeRole.id}`),
-      },
-    ]);
-  });
+  connection.query(
+    "SELECT first_name, last_name, title, salary FROM employee INNER JOIN role ON employee.id = role.id",
+    function (err, result) {
+      if (err) throw err;
+      console.log(result);
+      inquirer.prompt([
+        {
+          name: "employeeName",
+          type: "list",
+          message: "Who is the employee you would like to update?",
+          choices: result.map(
+            (employeeName) =>
+              `${employeeName.first_name} ${employeeName.last_name} | ${employeeName.title}`
+          ),
+        },
+        {
+          name: "employeeRole",
+          type: "list",
+          message: "What is the employee's role?",
+          choices: result.map((employeeRole) => `${employeeRole.title}`),
+        },
+        {
+          name: "newEmployeeRole",
+          type: "list",
+          message: "What is the employees new role?",
+          choices: result.map((employeeRoles) => `${employeeRoles.title}`),
+        },
+      ]);
+    }
+  );
 }
 
 function exit() {
