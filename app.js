@@ -226,6 +226,7 @@ function viewEmployees() {
     "SELECT first_name, last_name, title, salary FROM employee INNER JOIN role ON employee.id = role.id",
     function (err, result) {
       if (err) throw err;
+      console.log("\n" + chalk.blue("Employees:"));
       console.log(
         chalk.blue("There are: " + result.length + " total employees.")
       );
@@ -238,6 +239,7 @@ function viewEmployees() {
 function viewDepartments() {
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err;
+    console.log("\n" + chalk.blue("Departments:"));
     console.log(
       chalk.blue("There are: " + result.length + " total departments.")
     );
@@ -249,6 +251,7 @@ function viewDepartments() {
 function viewRoles() {
   connection.query("SELECT * FROM role", function (err, result) {
     if (err) throw err;
+    console.log("\n" + chalk.blue("Roles:"));
     console.log(
       chalk.blue("There are: " + result.length + " total employee roles.")
     );
